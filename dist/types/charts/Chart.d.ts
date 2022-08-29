@@ -1,0 +1,30 @@
+import * as d3 from "d3";
+export declare class Chart {
+    x: Function;
+    y: Function;
+    title: string | Function | number | boolean;
+    marginTop: number;
+    marginRight: number;
+    marginBottom: number;
+    marginLeft: number;
+    width: number;
+    height: number;
+    xDomain: Iterable<any>;
+    xRange: number[];
+    yType: typeof d3.scaleLinear;
+    yDomain: Iterable<any>;
+    yRange: number[];
+    xPadding: number;
+    yFormat: string;
+    yLabel: string;
+    color: string;
+    mapX: any;
+    mapY: any;
+    I: any;
+    xScale: any;
+    yScale: any;
+    xAxis: any;
+    yAxis: any;
+    data: Iterable<any>;
+    constructor(data: Iterable<any>);
+}
