@@ -1,62 +1,43 @@
 <template>
-    <div data-lkt="chart" ref="container"></div>
+    <div data-lkt="chart">
+        <div data-lkt="chart-content" ref="container" v-bind:style="containerStyle"></div>
+    </div>
 </template>
 
 <script lang="ts">
 
-import * as d3 from 'd3';
-import {BarChart} from "../charts/BarChart";
-import {IChartSizing} from "../types/IChartSizing";
+import * as echarts from 'echarts';
 import {ILktObject} from "lkt-tools";
+import {Chart} from "../instances/Chart";
+import {IDataSet} from "../types/IDataSet";
 
-const data = [
-    {letter: "A", frequency: 0.08167},
-    {letter: "B", frequency: 0.01492},
-    {letter: "C", frequency: 0.02782},
-    {letter: "D", frequency: 0.04253},
-    {letter: "E", frequency: 0.12702},
-    {letter: "F", frequency: 0.02288},
-    {letter: "G", frequency: 0.02015},
-    {letter: "H", frequency: 0.06094},
-    {letter: "I", frequency: 0.06966},
-    {letter: "J", frequency: 0.00153},
-    {letter: "K", frequency: 0.00772},
-    {letter: "L", frequency: 0.04025},
-    {letter: "M", frequency: 0.02406},
-    {letter: "N", frequency: 0.06749},
-    {letter: "O", frequency: 0.07507},
-    {letter: "P", frequency: 0.01929},
-    {letter: "Q", frequency: 0.00095},
-    {letter: "R", frequency: 0.05987},
-    {letter: "S", frequency: 0.06327},
-    {letter: "T", frequency: 0.09056},
-    {letter: "U", frequency: 0.02758},
-    {letter: "V", frequency: 0.00978},
-    {letter: "W", frequency: 0.0236},
-    {letter: "X", frequency: 0.0015},
-    {letter: "Y", frequency: 0.01974},
-    {letter: "Z", frequency: 0.00074},
-];
 export default {
     name: "LktChartBar",
     props: {
-        width: {type: Number, default: 1280},
         height: {type: Number, default: 500},
-        marginTop: {type: Number, default: undefined},
-        marginRight: {type: Number, default: undefined},
-        marginBottom: {type: Number, default: undefined},
-        marginLeft: {type: Number, default: undefined},
         color: {type: String, default: 'steelblue'},
+
+
+        series: {type: Array, default: (): IDataSet[] => []},
+        title: {type: String, default: ''},
+        subtitle: {type: String, default: ''},
     },
     data(): ILktObject {
         return {
             chart: undefined,
-            svg: undefined,
+            options: undefined,
         }
     },
     computed: {
+        containerStyle() {
+            let r = [];
+
+            r.push(`height: ${this.height}px`);
+
+            return r.join(';');
+        },
         sizing() {
-            let r:IChartSizing = {};
+            let r: ILktObject = {};
             if (this.width) {
                 r.width = this.width;
             }
@@ -79,28 +60,34 @@ export default {
         }
     },
     mounted() {
-        this.chart = new BarChart(data).setAxisYScaleLinear()
-            .setAxisY({
-                y: (d: any) => d.frequency,
-                yFormat: "%",
-                yLabel: "↑ Frequency",
-            })
+
+        this.options = new Chart()
+            .setSeries([
+                {
+                    name: 'sales',
+                    type: 'bar',
+                    data: [
+                        {value: 55},
+                        {value: 20},
+                        {value: -36, itemStyle: {color: 'red'}},
+                        {value: 10},
+                        {value: 10},
+                        {value: 20},
+                    ]
+                }
+            ])
             .setAxisX({
-                x: (d: any) => d.letter,
-                xDomain: d3.groupSort(data, ([d]) => -d.frequency, d => d.letter), // sort by descending frequency
+                data: ['a', 'b', 'c', 'd', 'e', 'f']
             })
-            .setColor({
-                color: this.color
-            });
+            .setTitle({text: 'Test tester'})
+            .setTooltip({trigger: "item", triggerOn: "mousemove"})
+        ;
 
-        if (Object.keys(this.sizing).length > 0) {
-            this.chart.setSizing(this.sizing);
-        }
+        // initialize the echarts instance
+        this.chart = echarts.init(this.$refs.container);
 
-        this.chart.prepare();
-
-        this.svg = this.chart.getSVG();
-        this.$refs.container.append(this.svg);
+        // Draw the chart
+        this.chart.setOption(this.options);
     }
 }
 </script>

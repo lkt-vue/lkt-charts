@@ -36,8 +36,7 @@
     "vue-tsc": "^0.38.9"
   },
   "peerDependencies": {
-    "d3": "^7.6.1",
-    "d3-sankey": "^0.12.3",
+    "echarts": "^5.3.3",
     "lkt-events": "git+https://gitlab.com/lkt-ui/lkt-events.git",
     "lkt-scss": "git+https://gitlab.com/lkt-ui/lkt-scss.git",
     "lkt-tools": "git+https://gitlab.com/lkt-ui/lkt-tools.git",
@@ -46,8 +45,5 @@
   },
   "engines": {
     "node": ">=12"
-  },
-  "dependencies": {
-    "@types/d3": "^7.4.0"
   }
 }

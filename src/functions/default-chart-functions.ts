@@ -15,3 +15,8 @@ export const defaultYMapper = (d: any) => d;
 //         svg.selectAll(".x-axis").call(xAxis);
 //     }
 // }
+
+export const defaultTooltipFormatter = (params: any) => {
+    let tar = params[1];
+    return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+}

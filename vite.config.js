@@ -19,11 +19,11 @@ export default {
         outDir,
         minify: true,
         rollupOptions: {
-            external: [ 'vue', 'lkt-tools', 'lkt-events', 'd3', 'd3-sankey' ],
+            external: [ 'vue', 'lkt-tools', 'lkt-events', 'echarts' ],
             output: {
                 globals: {
                     vue: 'Vue',
-                    "d3": 'd3',
+                    "echarts": 'echarts',
                     "lkt-tools": 'LktTools',
                     "lkt-events": 'LktEvents'
                 },
