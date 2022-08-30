@@ -1,46 +1,105 @@
 <template>
-    <div data-lkt="chart" ref="container">
-
-    </div>
+    <div data-lkt="chart" ref="container"></div>
 </template>
 
-<script>
+<script lang="ts">
 
-import * as d3 from "d3";
-import {Chart} from "../charts/Chart";
-import {getBarChart} from "../functions/functions";
+import * as d3 from 'd3';
+import {BarChart} from "../charts/BarChart";
+import {IChartSizing} from "../types/IChartSizing";
+import {ILktObject} from "lkt-tools";
 
 const data = [
-    { date: "24-Apr-07", amount: 93.24 },
-    { date: "25-Apr-07", amount: 95.35 },
-    { date: "26-Apr-07", amount: 98.84 },
-    { date: "27-Apr-07", amount: 99.92 },
-    { date: "30-Apr-07", amount: 99.8 },
-    { date: "1-May-07", amount: 99.47 },
-    { date: "2-May-07", amount: 100.39 },
-    { date: "3-May-07", amount: 100.4 },
-    { date: "4-May-07", amount: 100.81 },
-    { date: "7-May-07", amount: 103.92 },
-    { date: "8-May-07", amount: 105.06 },
-    { date: "9-May-07", amount: 106.88 },
-    { date: "10-May-07", amount: 107.34 },
+    {letter: "A", frequency: 0.08167},
+    {letter: "B", frequency: 0.01492},
+    {letter: "C", frequency: 0.02782},
+    {letter: "D", frequency: 0.04253},
+    {letter: "E", frequency: 0.12702},
+    {letter: "F", frequency: 0.02288},
+    {letter: "G", frequency: 0.02015},
+    {letter: "H", frequency: 0.06094},
+    {letter: "I", frequency: 0.06966},
+    {letter: "J", frequency: 0.00153},
+    {letter: "K", frequency: 0.00772},
+    {letter: "L", frequency: 0.04025},
+    {letter: "M", frequency: 0.02406},
+    {letter: "N", frequency: 0.06749},
+    {letter: "O", frequency: 0.07507},
+    {letter: "P", frequency: 0.01929},
+    {letter: "Q", frequency: 0.00095},
+    {letter: "R", frequency: 0.05987},
+    {letter: "S", frequency: 0.06327},
+    {letter: "T", frequency: 0.09056},
+    {letter: "U", frequency: 0.02758},
+    {letter: "V", frequency: 0.00978},
+    {letter: "W", frequency: 0.0236},
+    {letter: "X", frequency: 0.0015},
+    {letter: "Y", frequency: 0.01974},
+    {letter: "Z", frequency: 0.00074},
 ];
 export default {
     name: "LktChartBar",
-    data(){
+    props: {
+        width: {type: Number, default: 1280},
+        height: {type: Number, default: 500},
+        marginTop: {type: Number, default: undefined},
+        marginRight: {type: Number, default: undefined},
+        marginBottom: {type: Number, default: undefined},
+        marginLeft: {type: Number, default: undefined},
+        color: {type: String, default: 'steelblue'},
+    },
+    data(): ILktObject {
         return {
             chart: undefined,
             svg: undefined,
         }
     },
-    mounted(){
-        const width = 800;
-        const height = 500;
-        const svg = d3.select("svg").attr("width", width).attr("height", height);
-        const g = svg.append("g");
+    computed: {
+        sizing() {
+            let r:IChartSizing = {};
+            if (this.width) {
+                r.width = this.width;
+            }
+            if (this.height) {
+                r.height = this.height;
+            }
+            if (this.marginTop) {
+                r.marginTop = this.marginTop;
+            }
+            if (this.marginRight) {
+                r.marginRight = this.marginRight;
+            }
+            if (this.marginBottom) {
+                r.marginBottom = this.marginBottom;
+            }
+            if (this.marginLeft) {
+                r.marginLeft = this.marginLeft;
+            }
+            return r;
+        }
+    },
+    mounted() {
+        this.chart = new BarChart(data).setAxisYScaleLinear()
+            .setAxisY({
+                y: (d: any) => d.frequency,
+                yFormat: "%",
+                yLabel: "↑ Frequency",
+            })
+            .setAxisX({
+                x: (d: any) => d.letter,
+                xDomain: d3.groupSort(data, ([d]) => -d.frequency, d => d.letter), // sort by descending frequency
+            })
+            .setColor({
+                color: this.color
+            });
 
-        this.chart = new Chart(data);
-        this.svg = getBarChart(this.chart);
+        if (Object.keys(this.sizing).length > 0) {
+            this.chart.setSizing(this.sizing);
+        }
+
+        this.chart.prepare();
+
+        this.svg = this.chart.getSVG();
         this.$refs.container.append(this.svg);
     }
 }

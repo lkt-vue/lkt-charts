@@ -1,7 +1,13 @@
 import * as d3 from "d3";
-export declare class Chart {
-    x: Function;
-    y: Function;
+import { IChartOptions } from "../types/IChartOptions";
+import { IChartSizing } from "../types/IChartSizing";
+import { InternSet } from "d3";
+import { IChartAxisY } from "../types/IChartAxisY";
+import { IChartAxisX } from "../types/IChartAxisX";
+import { IChartColor } from "../types/IChartColor";
+export declare abstract class Chart implements IChartOptions, IChartSizing, IChartAxisY, IChartAxisX, IChartColor {
+    x: (d: any, i: any) => any;
+    y: (d: any) => any;
     title: string | Function | number | boolean;
     marginTop: number;
     marginRight: number;
@@ -9,22 +15,29 @@ export declare class Chart {
     marginLeft: number;
     width: number;
     height: number;
-    xDomain: Iterable<any>;
+    xDomain: InternSet | any[];
     xRange: number[];
     yType: typeof d3.scaleLinear;
-    yDomain: Iterable<any>;
+    yDomain: InternSet | any[];
     yRange: number[];
     xPadding: number;
     yFormat: string;
     yLabel: string;
     color: string;
-    mapX: any;
-    mapY: any;
+    X: any;
+    Y: any;
     I: any;
     xScale: any;
     yScale: any;
     xAxis: any;
     yAxis: any;
     data: Iterable<any>;
-    constructor(data: Iterable<any>);
+    protected constructor(data: Iterable<any>, { title, }?: IChartOptions);
+    setSizing(sizing: IChartSizing): Chart;
+    setAxisYScaleLinear(): Chart;
+    setAxisY(settings: IChartAxisY): Chart;
+    setAxisX(settings: IChartAxisX): Chart;
+    setColor(settings: IChartColor): Chart;
+    prepare(): this;
+    abstract getSVG(): SVGSVGElement;
 }

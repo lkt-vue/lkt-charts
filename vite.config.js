@@ -23,6 +23,7 @@ export default {
             output: {
                 globals: {
                     vue: 'Vue',
+                    "d3": 'd3',
                     "lkt-tools": 'LktTools',
                     "lkt-events": 'LktEvents'
                 },
