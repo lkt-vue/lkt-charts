@@ -1,7 +1,8 @@
 import { ILktObject } from "lkt-tools";
-import { IDataSet } from "../types/IDataSet";
-import { IAxisX } from "../types/IAxisX";
-import { ITitle } from "../types/ITitle";
+import { Chart } from "../instances/Chart";
+import { IDataSet } from "../interfaces/IDataSet";
+import { IAxisX } from "../interfaces/IAxisX";
+import { ITitle } from "../interfaces/ITitle";
 declare const _default: {
     name: string;
     props: {
@@ -28,6 +29,10 @@ declare const _default: {
         subtitle: {
             type: StringConstructor;
             default: string;
+        };
+        options: {
+            type: typeof Chart;
+            default: () => Chart;
         };
     };
     data(): ILktObject;

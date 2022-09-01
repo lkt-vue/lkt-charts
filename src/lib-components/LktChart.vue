@@ -9,12 +9,12 @@
 import * as echarts from 'echarts';
 import {ILktObject} from "lkt-tools";
 import {Chart} from "../instances/Chart";
-import {IDataSet} from "../types/IDataSet";
-import {IAxisX} from "../types/IAxisX";
-import {ITitle} from "../types/ITitle";
+import {IDataSet} from "../interfaces/IDataSet";
+import {IAxisX} from "../interfaces/IAxisX";
+import {ITitle} from "../interfaces/ITitle";
 
 export default {
-    name: "LktChartBar",
+    name: "LktChart",
     props: {
         height: {type: Number, default: 500},
         color: {type: String, default: 'steelblue'},
@@ -24,12 +24,12 @@ export default {
         axisX: {type: Object, default: (): IAxisX => { return {} }},
         series: {type: Array, default: (): IDataSet[] => []},
         subtitle: {type: String, default: ''},
+        options: {type: Chart, default: ():Chart => {return null;}}
     },
     data(): ILktObject {
         return {
             chart: undefined,
-            options: undefined,
-            resizeTimeout: undefined,
+            opts: undefined,
         }
     },
     computed: {
@@ -45,39 +45,13 @@ export default {
         onResize() {
             if (this.chart && this.chart.resize) {
                 this.chart.resize();
-                // if (this.resizeTimeout !== undefined) {
-                //     clearTimeout(this.resizeTimeout);
-                // }
-                // this.resizeTimeout = setTimeout(() => {
-                //     // Resize chart
-                //     this.resizeTimeout = undefined;
-                // }, 200);
             }
         }
     },
     mounted() {
-
-        let options = new Chart().setTooltip({trigger: "item", triggerOn: "mousemove"});
-
-        if (this.series.length > 0) {
-            options.setSeries(this.series);
-        }
-
-        if (Object.keys(this.axisX).length > 0) {
-            options.setAxisX(this.axisX);
-        }
-
-        if (Object.keys(this.title).length > 0) {
-            options.setTitle(this.title);
-        }
-
-        this.options = options;
-
         this.$nextTick(() => {
 
             let chart = echarts.init(this.$refs.container);
-
-            // Draw the chart
             chart.setOption(this.options);
 
             this.chart = chart;

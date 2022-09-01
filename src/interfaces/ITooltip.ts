@@ -1,5 +1,7 @@
+import {TTooltipTriggers} from "../types/ChartTypes";
+
 export interface ITooltip {
-    trigger?: 'item'|'axis'
+    trigger?: TTooltipTriggers
     triggerOn?: 'mousemove'
     axisPointer?: {
         type?: 'shadow'

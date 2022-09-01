@@ -1,11 +1,12 @@
 import {IItemStyle} from "./IItemStyle";
+import {TChartDataType} from "../types/ChartTypes";
 
 export interface IChartData {
     value?: number | string
     itemStyle?: IItemStyle
     name?: string
     stack?: string
-    type?: 'bar'|'sankey'
+    type?: TChartDataType
     emphasis?: {
         itemStyle?: IItemStyle
         focus?: 'adjacency'

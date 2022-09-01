@@ -1,9 +1,9 @@
-import { IDataSet } from "../types/IDataSet";
-import { IAxisX } from "../types/IAxisX";
-import { ITitle } from "../types/ITitle";
-import { IAxisY } from "../types/IAxisY";
-import { IGrid } from "../types/IGrid";
-import { ITooltip } from "../types/ITooltip";
+import { IDataSet } from "../interfaces/IDataSet";
+import { IAxisX } from "../interfaces/IAxisX";
+import { ITitle } from "../interfaces/ITitle";
+import { IAxisY } from "../interfaces/IAxisY";
+import { IGrid } from "../interfaces/IGrid";
+import { ITooltip } from "../interfaces/ITooltip";
 export declare class Chart {
     title?: ITitle;
     xAxis?: IAxisX;
@@ -13,6 +13,7 @@ export declare class Chart {
     grid?: IGrid;
     setSeries(series: IDataSet[]): Chart;
     setAxisX(data: IAxisX): Chart;
+    setAxisY(data: IAxisY): Chart;
     setTitle(data: ITitle): Chart;
     setGrid(data: IGrid): Chart;
     setTooltip(data: ITooltip): Chart;
