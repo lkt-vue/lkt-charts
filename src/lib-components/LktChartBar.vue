@@ -10,6 +10,8 @@ import * as echarts from 'echarts';
 import {ILktObject} from "lkt-tools";
 import {Chart} from "../instances/Chart";
 import {IDataSet} from "../types/IDataSet";
+import {IAxisX} from "../types/IAxisX";
+import {ITitle} from "../types/ITitle";
 
 export default {
     name: "LktChartBar",
@@ -18,14 +20,16 @@ export default {
         color: {type: String, default: 'steelblue'},
 
 
+        title: {type: Object, default: (): ITitle => { return {} }},
+        axisX: {type: Object, default: (): IAxisX => { return {} }},
         series: {type: Array, default: (): IDataSet[] => []},
-        title: {type: String, default: ''},
         subtitle: {type: String, default: ''},
     },
     data(): ILktObject {
         return {
             chart: undefined,
             options: undefined,
+            resizeTimeout: undefined,
         }
     },
     computed: {
@@ -35,59 +39,53 @@ export default {
             r.push(`height: ${this.height}px`);
 
             return r.join(';');
-        },
-        sizing() {
-            let r: ILktObject = {};
-            if (this.width) {
-                r.width = this.width;
+        }
+    },
+    methods: {
+        onResize() {
+            if (this.chart && this.chart.resize) {
+                this.chart.resize();
+                // if (this.resizeTimeout !== undefined) {
+                //     clearTimeout(this.resizeTimeout);
+                // }
+                // this.resizeTimeout = setTimeout(() => {
+                //     // Resize chart
+                //     this.resizeTimeout = undefined;
+                // }, 200);
             }
-            if (this.height) {
-                r.height = this.height;
-            }
-            if (this.marginTop) {
-                r.marginTop = this.marginTop;
-            }
-            if (this.marginRight) {
-                r.marginRight = this.marginRight;
-            }
-            if (this.marginBottom) {
-                r.marginBottom = this.marginBottom;
-            }
-            if (this.marginLeft) {
-                r.marginLeft = this.marginLeft;
-            }
-            return r;
         }
     },
     mounted() {
 
-        this.options = new Chart()
-            .setSeries([
-                {
-                    name: 'sales',
-                    type: 'bar',
-                    data: [
-                        {value: 55},
-                        {value: 20},
-                        {value: -36, itemStyle: {color: 'red'}},
-                        {value: 10},
-                        {value: 10},
-                        {value: 20},
-                    ]
-                }
-            ])
-            .setAxisX({
-                data: ['a', 'b', 'c', 'd', 'e', 'f']
-            })
-            .setTitle({text: 'Test tester'})
-            .setTooltip({trigger: "item", triggerOn: "mousemove"})
-        ;
+        let options = new Chart().setTooltip({trigger: "item", triggerOn: "mousemove"});
 
-        // initialize the echarts instance
-        this.chart = echarts.init(this.$refs.container);
+        if (this.series.length > 0) {
+            options.setSeries(this.series);
+        }
 
-        // Draw the chart
-        this.chart.setOption(this.options);
+        if (Object.keys(this.axisX).length > 0) {
+            options.setAxisX(this.axisX);
+        }
+
+        if (Object.keys(this.title).length > 0) {
+            options.setTitle(this.title);
+        }
+
+        this.options = options;
+
+        this.$nextTick(() => {
+
+            let chart = echarts.init(this.$refs.container);
+
+            // Draw the chart
+            chart.setOption(this.options);
+
+            this.chart = chart;
+            addEventListener('resize', this.onResize);
+        })
+    },
+    unmounted() {
+        removeEventListener('resize', this.onResize);
     }
 }
 </script>

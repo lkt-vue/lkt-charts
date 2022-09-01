@@ -8,8 +8,8 @@ import {ITooltip} from "../types/ITooltip";
 export class Chart {
 
     title?: ITitle
-    xAxis: IAxisX
-    yAxis: IAxisY = {}
+    xAxis?: IAxisX
+    yAxis?: IAxisY
     series:IDataSet[] = []
     tooltip?: ITooltip
     grid?: IGrid

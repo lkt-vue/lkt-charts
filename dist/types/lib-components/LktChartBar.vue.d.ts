@@ -1,5 +1,7 @@
 import { ILktObject } from "lkt-tools";
 import { IDataSet } from "../types/IDataSet";
+import { IAxisX } from "../types/IAxisX";
+import { ITitle } from "../types/ITitle";
 declare const _default: {
     name: string;
     props: {
@@ -11,13 +13,17 @@ declare const _default: {
             type: StringConstructor;
             default: string;
         };
+        title: {
+            type: ObjectConstructor;
+            default: () => ITitle;
+        };
+        axisX: {
+            type: ObjectConstructor;
+            default: () => IAxisX;
+        };
         series: {
             type: ArrayConstructor;
             default: () => IDataSet[];
-        };
-        title: {
-            type: StringConstructor;
-            default: string;
         };
         subtitle: {
             type: StringConstructor;
@@ -27,8 +33,11 @@ declare const _default: {
     data(): ILktObject;
     computed: {
         containerStyle(): string;
-        sizing(): ILktObject;
+    };
+    methods: {
+        onResize(): void;
     };
     mounted(): void;
+    unmounted(): void;
 };
 export default _default;

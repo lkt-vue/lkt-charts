@@ -1,88 +1,83 @@
-import * as n from "echarts";
-import { openBlock as o, createElementBlock as h, createElementVNode as l, normalizeStyle as c } from "vue";
-class m {
+import * as o from "echarts";
+import { openBlock as h, createElementBlock as a, createElementVNode as c, normalizeStyle as l } from "vue";
+class u {
   constructor() {
-    this.yAxis = {}, this.series = [];
+    this.series = [];
   }
-  setSeries(e) {
-    return this.series = e, this;
+  setSeries(t) {
+    return this.series = t, this;
   }
-  setAxisX(e) {
-    return this.xAxis = e, this;
+  setAxisX(t) {
+    return this.xAxis = t, this;
   }
-  setTitle(e) {
-    return this.title = e, this;
+  setTitle(t) {
+    return this.title = t, this;
   }
-  setGrid(e) {
-    return this.grid = e, this;
+  setGrid(t) {
+    return this.grid = t, this;
   }
-  setTooltip(e) {
-    return this.tooltip = e, this;
+  setTooltip(t) {
+    return this.tooltip = t, this;
   }
 }
-const u = {
+const p = {
   name: "LktChartBar",
   props: {
     height: { type: Number, default: 500 },
     color: { type: String, default: "steelblue" },
+    title: { type: Object, default: () => ({}) },
+    axisX: { type: Object, default: () => ({}) },
     series: { type: Array, default: () => [] },
-    title: { type: String, default: "" },
     subtitle: { type: String, default: "" }
   },
   data() {
     return {
       chart: void 0,
-      options: void 0
+      options: void 0,
+      resizeTimeout: void 0
     };
   },
   computed: {
     containerStyle() {
-      let t = [];
-      return t.push(`height: ${this.height}px`), t.join(";");
-    },
-    sizing() {
-      let t = {};
-      return this.width && (t.width = this.width), this.height && (t.height = this.height), this.marginTop && (t.marginTop = this.marginTop), this.marginRight && (t.marginRight = this.marginRight), this.marginBottom && (t.marginBottom = this.marginBottom), this.marginLeft && (t.marginLeft = this.marginLeft), t;
+      let e = [];
+      return e.push(`height: ${this.height}px`), e.join(";");
+    }
+  },
+  methods: {
+    onResize() {
+      this.chart && this.chart.resize && this.chart.resize();
     }
   },
   mounted() {
-    this.options = new m().setSeries([
-      {
-        name: "sales",
-        type: "bar",
-        data: [
-          { value: 55 },
-          { value: 20 },
-          { value: -36, itemStyle: { color: "red" } },
-          { value: 10 },
-          { value: 10 },
-          { value: 20 }
-        ]
-      }
-    ]).setAxisX({
-      data: ["a", "b", "c", "d", "e", "f"]
-    }).setTitle({ text: "Test tester" }).setTooltip({ trigger: "item", triggerOn: "mousemove" }), this.chart = n.init(this.$refs.container), this.chart.setOption(this.options);
+    let e = new u().setTooltip({ trigger: "item", triggerOn: "mousemove" });
+    this.series.length > 0 && e.setSeries(this.series), Object.keys(this.axisX).length > 0 && e.setAxisX(this.axisX), Object.keys(this.title).length > 0 && e.setTitle(this.title), this.options = e, this.$nextTick(() => {
+      let t = o.init(this.$refs.container);
+      t.setOption(this.options), this.chart = t, addEventListener("resize", this.onResize);
+    });
+  },
+  unmounted() {
+    removeEventListener("resize", this.onResize);
   }
-}, p = (t, e) => {
-  const i = t.__vccOpts || t;
-  for (const [r, s] of e)
-    i[r] = s;
+}, d = (e, t) => {
+  const i = e.__vccOpts || e;
+  for (const [s, r] of t)
+    i[s] = r;
   return i;
-}, g = { "data-lkt": "chart" };
-function d(t, e, i, r, s, a) {
-  return o(), h("div", g, [
-    l("div", {
+}, f = { "data-lkt": "chart" };
+function m(e, t, i, s, r, n) {
+  return h(), a("div", f, [
+    c("div", {
       "data-lkt": "chart-content",
       ref: "container",
-      style: c(a.containerStyle)
+      style: l(n.containerStyle)
     }, null, 4)
   ]);
 }
-const f = /* @__PURE__ */ p(u, [["render", d]]), v = {
-  install: (t, e) => {
-    t.component("lkt-chart-bar", f);
+const g = /* @__PURE__ */ d(p, [["render", m]]), k = {
+  install: (e, t) => {
+    e.component("lkt-chart-bar", g);
   }
 };
 export {
-  v as default
+  k as default
 };
