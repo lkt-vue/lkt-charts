@@ -1,14 +1,14 @@
-import {IItemStyle} from "./IItemStyle";
-import {TChartDataType} from "../types/ChartTypes";
+import {ItemStyle} from "./ItemStyle";
+import {ChartDataType} from "../types/ChartTypes";
 
-export interface IChartData {
+export interface ChartData {
     value?: number | string
-    itemStyle?: IItemStyle
+    itemStyle?: ItemStyle
     name?: string
     stack?: string
-    type?: TChartDataType
+    type?: ChartDataType
     emphasis?: {
-        itemStyle?: IItemStyle
+        itemStyle?: ItemStyle
         focus?: 'adjacency'
     },
     label?: {

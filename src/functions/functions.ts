@@ -1,47 +1,30 @@
 import {Chart} from "../instances/Chart";
-import {IDataSet} from "../interfaces/IDataSet";
-import {IAxisX} from "../interfaces/IAxisX";
-import {IAxisY} from "../interfaces/IAxisY";
-import {isArray, isObject} from "lkt-tools";
-import {TTooltipTriggerOn, TTooltipTriggers} from "../types/ChartTypes";
+import {DataSet} from "../interfaces/DataSet";
+import {AxisX} from "../interfaces/AxisX";
+import {AxisY} from "../interfaces/AxisY";
+import {TooltipTriggerOn, TooltipTriggers} from "../types/ChartTypes";
 
-export const createBarChart = (series: IDataSet[], axisX: IAxisX = {}, axisY: IAxisY = {}): Chart => {
-    let r = new Chart();
+export const createBarChart = (series: DataSet[], axisX: AxisX = {}, axisY: AxisY = {}): Chart => {
+    const r = new Chart();
 
-    if (isArray(series) && series.length > 0) {
-        r.setSeries(series);
-    }
-
-    if (isObject(axisX) && Object.keys(axisX).length > 0) {
-        r.setAxisX(axisX);
-    }
-
-    if (isObject(axisY) && Object.keys(axisY).length > 0) {
-        r.setAxisY(axisY);
-    }
+    if (Array.isArray(series) && series.length > 0) r.setSeries(series);
+    if (typeof axisX === 'object' && Object.keys(axisX).length > 0) r.setAxisX(axisX);
+    if (typeof axisY === 'object' && Object.keys(axisY).length > 0) r.setAxisY(axisY);
 
     return r;
 }
 
-export const createSankeyChart = (series: IDataSet[], axisX: IAxisX = undefined, axisY: IAxisY = undefined): Chart => {
-    let r = new Chart();
+export const createSankeyChart = (series: DataSet[], axisX: AxisX = undefined, axisY: AxisY = undefined): Chart => {
+    const r = new Chart();
 
-    if (isArray(series) && series.length > 0) {
-        r.setSeries(series);
-    }
-
-    if (isObject(axisX) && Object.keys(axisX).length > 0) {
-        r.setAxisX(axisX);
-    }
-
-    if (isObject(axisY) && Object.keys(axisY).length > 0) {
-        r.setAxisY(axisY);
-    }
+    if (Array.isArray(series) && series.length > 0) r.setSeries(series);
+    if (typeof axisX === 'object' && Object.keys(axisX).length > 0) r.setAxisX(axisX);
+    if (typeof axisY === 'object' && Object.keys(axisY).length > 0) r.setAxisY(axisY);
 
     return r;
 }
 
-export const addBasicTooltip = (chart: Chart, trigger: TTooltipTriggers = 'item', triggerOn: TTooltipTriggerOn = 'mousemove') => {
+export const addBasicTooltip = (chart: Chart, trigger: TooltipTriggers = 'item', triggerOn: TooltipTriggerOn = 'mousemove') => {
     chart.setTooltip({trigger, triggerOn});
     return chart;
 }

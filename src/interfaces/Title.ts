@@ -1,4 +1,4 @@
-export interface ITitle {
+export interface Title {
     text?: string
     subtext?: string
 }

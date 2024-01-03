@@ -1,4 +1,4 @@
-export interface IGrid {
+export interface Grid {
     left?: string,
     right?: string,
     bottom?: string,

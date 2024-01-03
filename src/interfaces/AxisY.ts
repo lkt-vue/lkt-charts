@@ -1,4 +1,4 @@
-export interface IAxisY {
+export interface AxisY {
     data?: string[]
     type?: 'value'
 }

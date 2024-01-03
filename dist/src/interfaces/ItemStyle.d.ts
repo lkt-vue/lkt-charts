@@ -1,4 +1,4 @@
-export interface IItemStyle {
+export interface ItemStyle {
     color?: string;
     borderColor?: string;
 }

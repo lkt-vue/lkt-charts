@@ -1,45 +1,45 @@
-import {IDataSet} from "../interfaces/IDataSet";
-import {IAxisX} from "../interfaces/IAxisX";
-import {ITitle} from "../interfaces/ITitle";
-import {IAxisY} from "../interfaces/IAxisY";
-import {IGrid} from "../interfaces/IGrid";
-import {ITooltip} from "../interfaces/ITooltip";
+import {DataSet} from "../interfaces/DataSet";
+import {AxisX} from "../interfaces/AxisX";
+import {Title} from "../interfaces/Title";
+import {AxisY} from "../interfaces/AxisY";
+import {Grid} from "../interfaces/Grid";
+import {Tooltip} from "../interfaces/Tooltip";
 
 export class Chart {
 
-    title?: ITitle
-    xAxis?: IAxisX
-    yAxis?: IAxisY
-    series:IDataSet[] = []
-    tooltip?: ITooltip
-    grid?: IGrid
+    title?: Title
+    xAxis?: AxisX
+    yAxis?: AxisY
+    series:DataSet[] = []
+    tooltip?: Tooltip
+    grid?: Grid
 
-    setSeries(series: IDataSet[]): Chart {
+    setSeries(series: DataSet[]): Chart {
         this.series = series;
         return this;
     }
 
-    setAxisX(data: IAxisX): Chart {
+    setAxisX(data: AxisX): Chart {
         this.xAxis = data;
         return this;
     }
 
-    setAxisY(data: IAxisY): Chart {
+    setAxisY(data: AxisY): Chart {
         this.yAxis = data;
         return this;
     }
 
-    setTitle(data: ITitle): Chart {
+    setTitle(data: Title): Chart {
         this.title = data;
         return this;
     }
 
-    setGrid(data: IGrid): Chart {
+    setGrid(data: Grid): Chart {
         this.grid = data;
         return this;
     }
 
-    setTooltip(data: ITooltip): Chart {
+    setTooltip(data: Tooltip): Chart {
         this.tooltip = data;
         return this;
     }

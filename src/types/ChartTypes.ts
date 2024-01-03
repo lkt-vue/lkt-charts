@@ -1,4 +1,4 @@
-export type TTooltipTriggers = 'item'|'axis';
-export type TTooltipTriggerOn = 'mousemove';
-export type TChartDataType = 'bar'|'sankey';
-export type TDataSetType = 'bar';
+export type TooltipTriggers = 'item'|'axis';
+export type TooltipTriggerOn = 'mousemove';
+export type ChartDataType = 'bar'|'sankey';
+export type DataSetType = 'bar';

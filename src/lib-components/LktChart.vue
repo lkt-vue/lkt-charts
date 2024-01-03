@@ -1,65 +1,92 @@
-<template>
-    <div data-lkt="chart">
-        <div data-lkt="chart-content" ref="container" v-bind:style="containerStyle"></div>
-    </div>
-</template>
-
 <script lang="ts">
+export default {name: 'LktChart', inheritAttrs: false};
+</script>
 
-import * as echarts from 'echarts';
-import {ILktObject} from "lkt-tools";
+<script setup lang="ts">
+import {computed, onMounted, onUnmounted, ref} from "vue";
+import {Title} from "../interfaces/Title";
+import {AxisX} from "../interfaces/AxisX";
+import {DataSet} from "../interfaces/DataSet";
 import {Chart} from "../instances/Chart";
-import {IDataSet} from "../interfaces/IDataSet";
-import {IAxisX} from "../interfaces/IAxisX";
-import {ITitle} from "../interfaces/ITitle";
+import * as echarts from "echarts";
+import {httpCall, HTTPResponse} from "lkt-http-client";
 
-export default {
-    name: "LktChart",
-    props: {
-        height: {type: Number, default: 500},
-        color: {type: String, default: 'steelblue'},
+const props = defineProps({
+    height: {type: Number, default: 500},
+    resource: {type: String, required: false},
+    resourceData: {type: Object, required: false, default: () => ({})},
 
+    title: { type: Object, default: (): Title => ({}) },
+    subtitle: {type: String, default: ''},
 
-        title: {type: Object, default: (): ITitle => { return {} }},
-        axisX: {type: Object, default: (): IAxisX => { return {} }},
-        series: {type: Array, default: (): IDataSet[] => []},
-        subtitle: {type: String, default: ''},
-        options: {type: Chart, default: ():Chart => {return null;}}
-    },
-    data(): ILktObject {
-        return {
-            chart: undefined,
-            opts: undefined,
+    axisX: { type: Object, default: (): AxisX => ({}) },
+    series: {type: Array, default: (): DataSet[] => []},
+    options: {
+        type: Chart, default: (): Chart => {
+            return null;
         }
-    },
-    computed: {
-        containerStyle() {
-            let r = [];
+    }
+});
 
-            r.push(`height: ${this.height}px`);
+const chart = ref(undefined),
+    container = ref(null),
+    isLoading = ref(false);
 
-            return r.join(';');
-        }
-    },
-    methods: {
-        onResize() {
-            if (this.chart && this.chart.resize) {
-                this.chart.resize();
-            }
-        }
-    },
-    mounted() {
-        this.$nextTick(() => {
+const containerStyle = computed(() => {
+    let r = [];
+    r.push(`height: ${props.height}px`);
+    return r.join(';');
+});
 
-            let chart = echarts.init(this.$refs.container);
-            chart.setOption(this.options);
-
-            this.chart = chart;
-            addEventListener('resize', this.onResize);
-        })
-    },
-    unmounted() {
-        removeEventListener('resize', this.onResize);
+const onResize = () => {
+    if (chart.value && chart.value.resize) {
+        chart.value.resize();
     }
 }
+
+const buildResourceData = async () => {
+    let _chart = echarts.init(container.value);
+    isLoading.value = true;
+
+    try {
+        const r = await httpCall(props.resource, props.resourceData);
+        let opts = JSON.parse(JSON.stringify(props.options));
+        opts = {...opts, ...r.data};
+
+        //@ts-ignore
+        _chart.setOption(opts);
+
+        chart.value = _chart;
+        isLoading.value = false;
+    } catch (r_1) {
+        isLoading.value = false;
+    }
+}
+
+const buildLocalData = () => {
+    let _chart = echarts.init(container.value);
+    //@ts-ignore
+    _chart.setOption(r.data);
+
+    chart.value = _chart;
+}
+
+onMounted(() => {
+    if (props.resource) buildResourceData();
+    else buildLocalData();
+
+    addEventListener('resize', onResize);
+})
+
+onUnmounted(() => {
+    removeEventListener('resize', onResize);
+})
+
 </script>
+
+<template>
+    <div class="lkt-chart">
+        <lkt-loader v-if="isLoading"></lkt-loader>
+        <div v-show="!isLoading" class="lkt-chart-content" ref="container" v-bind:style="containerStyle"></div>
+    </div>
+</template>
