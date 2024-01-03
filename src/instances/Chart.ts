@@ -10,7 +10,7 @@ export class Chart {
     title?: Title
     xAxis?: AxisX
     yAxis?: AxisY
-    series:DataSet[] = []
+    series: DataSet[] = []
     tooltip?: Tooltip
     grid?: Grid
 

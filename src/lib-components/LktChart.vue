@@ -16,16 +16,12 @@ const props = defineProps({
     resource: {type: String, required: false},
     resourceData: {type: Object, required: false, default: () => ({})},
 
-    title: { type: Object, default: (): Title => ({}) },
+    title: {type: Object, default: (): Title => ({})},
     subtitle: {type: String, default: ''},
 
-    axisX: { type: Object, default: (): AxisX => ({}) },
+    axisX: {type: Object, default: (): AxisX => ({})},
     series: {type: Array, default: (): DataSet[] => []},
-    options: {
-        type: Chart, default: (): Chart => {
-            return null;
-        }
-    }
+    options: {type: Chart, default: (): Chart => null}
 });
 
 const chart = ref(undefined),
