@@ -1,12 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 import LktChart from "./lib-components/LktChart.vue";
-import {App} from "vue";
+import {App, Plugin} from "vue";
 
 export {createBarChart, createSankeyChart, addBasicTooltip, setChartTitle} from "./functions/functions";
 
 import "./../lkt-charts.css";
 
-const LktCharts = {
+const LktCharts: Plugin = {
     install: (app: App, options: any) => {
         app.component('lkt-chart', LktChart);
     },

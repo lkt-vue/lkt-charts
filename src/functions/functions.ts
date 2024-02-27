@@ -14,7 +14,7 @@ export const createBarChart = (series: DataSet[], axisX: AxisX = {}, axisY: Axis
     return r;
 }
 
-export const createSankeyChart = (series: DataSet[], axisX: AxisX = undefined, axisY: AxisY = undefined): Chart => {
+export const createSankeyChart = (series: DataSet[], axisX: AxisX|undefined = undefined, axisY: AxisY|undefined = undefined): Chart => {
     const r = new Chart();
 
     if (Array.isArray(series) && series.length > 0) r.setSeries(series);
@@ -29,7 +29,7 @@ export const addBasicTooltip = (chart: Chart, trigger: TooltipTriggers = 'item',
     return chart;
 }
 
-export const setChartTitle = (chart: Chart, title: string = undefined, subtitle: string = undefined) => {
+export const setChartTitle = (chart: Chart, title: string|undefined = undefined, subtitle: string|undefined = undefined) => {
     chart.setTitle({text: title, subtext: subtitle});
     return chart;
 }

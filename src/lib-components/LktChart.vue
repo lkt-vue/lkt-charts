@@ -4,24 +4,31 @@ export default {name: 'LktChart', inheritAttrs: false};
 
 <script setup lang="ts">
 import {computed, onMounted, onUnmounted, ref} from "vue";
-import {Title} from "../interfaces/Title";
 import {AxisX} from "../interfaces/AxisX";
 import {DataSet} from "../interfaces/DataSet";
 import {Chart} from "../instances/Chart";
 import * as echarts from "echarts";
-import {httpCall, HTTPResponse} from "lkt-http-client";
+import {httpCall} from "lkt-http-client";
+import {LktObject} from "lkt-ts-interfaces";
 
-const props = defineProps({
-    height: {type: Number, default: 500},
-    resource: {type: String, required: false},
-    resourceData: {type: Object, required: false, default: () => ({})},
-
-    title: {type: Object, default: (): Title => ({})},
-    subtitle: {type: String, default: ''},
-
-    axisX: {type: Object, default: (): AxisX => ({})},
-    series: {type: Array, default: (): DataSet[] => []},
-    options: {type: Chart, default: (): Chart => null}
+// Props
+const props = withDefaults(defineProps<{
+    height?: number
+    resource?: string
+    resourceData?: LktObject|undefined
+    title?: string
+    subtitle?: string
+    axisX?: AxisX|undefined
+    series?: DataSet[]
+    options?: Chart|null
+}>(), {
+    height: 500,
+    resource: '',
+    resourceData: undefined,
+    title: '',
+    subtitle: '',
+    axisX: undefined,
+    options: null
 });
 
 const chart = ref(undefined),
@@ -35,7 +42,9 @@ const containerStyle = computed(() => {
 });
 
 const onResize = () => {
+    //@ts-ignore
     if (chart.value && chart.value.resize) {
+        //@ts-ignore
         chart.value.resize();
     }
 }
@@ -51,7 +60,7 @@ const buildResourceData = async () => {
 
         //@ts-ignore
         _chart.setOption(opts);
-
+        //@ts-ignore
         chart.value = _chart;
         isLoading.value = false;
     } catch (r_1) {
@@ -63,7 +72,7 @@ const buildLocalData = () => {
     let _chart = echarts.init(container.value);
     //@ts-ignore
     _chart.setOption(r.data);
-
+    //@ts-ignore
     chart.value = _chart;
 }
 
