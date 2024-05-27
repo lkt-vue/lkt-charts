@@ -1,5 +1,5 @@
 declare function R(e: any, t?: string, s?: string): any;
-declare function N(e: any, t?: {}, s?: {}): f;
+declare function E(e: any, t?: {}, s?: {}): f;
 declare function J(e: any, t?: undefined, s?: undefined): f;
 declare namespace G {
     function install(e: any, t: any): void;
@@ -19,4 +19,4 @@ declare class f {
     setTooltip(t: any): this;
     tooltip: any;
 }
-export { R as addBasicTooltip, N as createBarChart, J as createSankeyChart, G as default, V as setChartTitle };
+export { R as addBasicTooltip, E as createBarChart, J as createSankeyChart, G as default, V as setChartTitle };

@@ -3,7 +3,7 @@ export default {name: 'LktChart', inheritAttrs: false};
 </script>
 
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {AxisX} from "../interfaces/AxisX";
 import {DataSet} from "../interfaces/DataSet";
 import {Chart} from "../instances/Chart";
@@ -70,8 +70,9 @@ const buildResourceData = async () => {
 
 const buildLocalData = () => {
     let _chart = echarts.init(container.value);
+    let opts = JSON.parse(JSON.stringify(props.options));
     //@ts-ignore
-    _chart.setOption(r.data);
+    _chart.setOption(opts);
     //@ts-ignore
     chart.value = _chart;
 }
@@ -86,6 +87,11 @@ onMounted(() => {
 onUnmounted(() => {
     removeEventListener('resize', onResize);
 })
+
+watch(() => props.options, () => {
+    if (props.resource) buildResourceData();
+    else buildLocalData();
+}, {deep: true})
 
 </script>
 
