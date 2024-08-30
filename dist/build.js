@@ -1,8 +1,8 @@
-import { defineComponent as m, ref as a, computed as y, onMounted as k, onUnmounted as _, watch as g, resolveComponent as A, openBlock as d, createElementBlock as b, createBlock as S, createCommentVNode as C, withDirectives as O, createElementVNode as j, normalizeStyle as x, vShow as w } from "vue";
-import * as p from "echarts";
+import { defineComponent as y, ref as u, computed as k, onMounted as _, onUnmounted as g, watch as d, resolveComponent as A, openBlock as p, createElementBlock as b, createBlock as S, createCommentVNode as C, withDirectives as O, createElementVNode as j, normalizeStyle as x, vShow as w } from "vue";
+import * as f from "echarts";
 import { httpCall as z } from "lkt-http-client";
-const L = { class: "lkt-chart" }, N = { name: "LktChart", inheritAttrs: !1 }, T = /* @__PURE__ */ m({
-  ...N,
+const D = { class: "lkt-chart" }, L = { name: "LktChart", inheritAttrs: !1 }, N = /* @__PURE__ */ y({
+  ...L,
   props: {
     height: { default: 500 },
     resource: { default: "" },
@@ -13,41 +13,43 @@ const L = { class: "lkt-chart" }, N = { name: "LktChart", inheritAttrs: !1 }, T 
     series: {},
     options: { default: null }
   },
-  setup(e) {
-    const t = e, s = a(void 0), r = a(null), i = a(!1), v = y(() => {
+  setup(t) {
+    const e = t, r = u(void 0), s = u(null), i = u(!1), m = k(() => {
       let o = [];
-      return o.push(`height: ${t.height}px`), o.join(";");
-    }), c = () => {
-      s.value && s.value.resize && s.value.resize();
-    }, u = async () => {
-      let o = p.init(r.value);
+      return o.push(`height: ${e.height}px`), o.join(";");
+    }), h = () => {
+      r.value && r.value.resize && r.value.resize();
+    }, a = async () => {
+      let o = f.init(s.value);
       i.value = !0;
       try {
-        const n = await z(t.resource, t.resourceData);
-        let l = JSON.parse(JSON.stringify(t.options));
-        l = { ...l, ...n.data }, o.setOption(l), s.value = o, i.value = !1;
+        const n = await z(e.resource, e.resourceData);
+        let l = JSON.parse(JSON.stringify(e.options));
+        l = { ...l, ...n.data }, o.setOption(l), r.value = o, i.value = !1;
       } catch {
         i.value = !1;
       }
-    }, h = () => {
-      let o = p.init(r.value), n = JSON.parse(JSON.stringify(t.options));
-      o.setOption(n), s.value = o;
+    }, c = () => {
+      let o = f.init(s.value), n = JSON.parse(JSON.stringify(e.options));
+      o.setOption(n), r.value = o;
     };
-    return k(() => {
-      t.resource ? u() : h(), addEventListener("resize", c);
-    }), _(() => {
-      removeEventListener("resize", c);
-    }), g(() => t.options, () => {
-      t.resource ? u() : h();
+    return _(() => {
+      e.resource ? a() : c(), addEventListener("resize", h);
+    }), g(() => {
+      removeEventListener("resize", h);
+    }), d(() => e.options, () => {
+      e.resource ? a() : c();
+    }, { deep: !0 }), d(() => e.resourceData, () => {
+      e.resource ? a() : c();
     }, { deep: !0 }), (o, n) => {
       const l = A("lkt-loader");
-      return d(), b("div", L, [
-        i.value ? (d(), S(l, { key: 0 })) : C("", !0),
+      return p(), b("div", D, [
+        i.value ? (p(), S(l, { key: 0 })) : C("", !0),
         O(j("div", {
           class: "lkt-chart-content",
           ref_key: "container",
-          ref: r,
-          style: x(v.value)
+          ref: s,
+          style: x(m.value)
         }, null, 4), [
           [w, !i.value]
         ])
@@ -55,38 +57,38 @@ const L = { class: "lkt-chart" }, N = { name: "LktChart", inheritAttrs: !1 }, T 
     };
   }
 });
-class f {
+class v {
   constructor() {
     this.series = [];
   }
-  setSeries(t) {
-    return this.series = t, this;
+  setSeries(e) {
+    return this.series = e, this;
   }
-  setAxisX(t) {
-    return this.xAxis = t, this;
+  setAxisX(e) {
+    return this.xAxis = e, this;
   }
-  setAxisY(t) {
-    return this.yAxis = t, this;
+  setAxisY(e) {
+    return this.yAxis = e, this;
   }
-  setTitle(t) {
-    return this.title = t, this;
+  setTitle(e) {
+    return this.title = e, this;
   }
-  setGrid(t) {
-    return this.grid = t, this;
+  setGrid(e) {
+    return this.grid = e, this;
   }
-  setTooltip(t) {
-    return this.tooltip = t, this;
+  setTooltip(e) {
+    return this.tooltip = e, this;
   }
 }
-const E = (e, t = {}, s = {}) => {
-  const r = new f();
-  return Array.isArray(e) && e.length > 0 && r.setSeries(e), typeof t == "object" && Object.keys(t).length > 0 && r.setAxisX(t), typeof s == "object" && Object.keys(s).length > 0 && r.setAxisY(s), r;
-}, J = (e, t = void 0, s = void 0) => {
-  const r = new f();
-  return Array.isArray(e) && e.length > 0 && r.setSeries(e), typeof t == "object" && Object.keys(t).length > 0 && r.setAxisX(t), typeof s == "object" && Object.keys(s).length > 0 && r.setAxisY(s), r;
-}, R = (e, t = "item", s = "mousemove") => (e.setTooltip({ trigger: t, triggerOn: s }), e), V = (e, t = void 0, s = void 0) => (e.setTitle({ text: t, subtext: s }), e), G = {
-  install: (e, t) => {
-    e.component("lkt-chart", T);
+const E = (t, e = {}, r = {}) => {
+  const s = new v();
+  return Array.isArray(t) && t.length > 0 && s.setSeries(t), typeof e == "object" && Object.keys(e).length > 0 && s.setAxisX(e), typeof r == "object" && Object.keys(r).length > 0 && s.setAxisY(r), s;
+}, J = (t, e = void 0, r = void 0) => {
+  const s = new v();
+  return Array.isArray(t) && t.length > 0 && s.setSeries(t), typeof e == "object" && Object.keys(e).length > 0 && s.setAxisX(e), typeof r == "object" && Object.keys(r).length > 0 && s.setAxisY(r), s;
+}, R = (t, e = "item", r = "mousemove") => (t.setTooltip({ trigger: e, triggerOn: r }), t), V = (t, e = void 0, r = void 0) => (t.setTitle({ text: e, subtext: r }), t), G = {
+  install: (t, e) => {
+    t.component("lkt-chart", N);
   }
 };
 export {

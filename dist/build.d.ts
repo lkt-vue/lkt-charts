@@ -1,22 +1,22 @@
-declare function R(e: any, t?: string, s?: string): any;
-declare function E(e: any, t?: {}, s?: {}): f;
-declare function J(e: any, t?: undefined, s?: undefined): f;
+declare function R(t: any, e?: string, r?: string): any;
+declare function E(t: any, e?: {}, r?: {}): v;
+declare function J(t: any, e?: undefined, r?: undefined): v;
 declare namespace G {
-    function install(e: any, t: any): void;
+    function install(t: any, e: any): void;
 }
-declare function V(e: any, t?: undefined, s?: undefined): any;
-declare class f {
+declare function V(t: any, e?: undefined, r?: undefined): any;
+declare class v {
     series: any[];
-    setSeries(t: any): this;
-    setAxisX(t: any): this;
+    setSeries(e: any): this;
+    setAxisX(e: any): this;
     xAxis: any;
-    setAxisY(t: any): this;
+    setAxisY(e: any): this;
     yAxis: any;
-    setTitle(t: any): this;
+    setTitle(e: any): this;
     title: any;
-    setGrid(t: any): this;
+    setGrid(e: any): this;
     grid: any;
-    setTooltip(t: any): this;
+    setTooltip(e: any): this;
     tooltip: any;
 }
 export { R as addBasicTooltip, E as createBarChart, J as createSankeyChart, G as default, V as setChartTitle };

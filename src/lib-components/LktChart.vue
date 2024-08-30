@@ -93,6 +93,11 @@ watch(() => props.options, () => {
     else buildLocalData();
 }, {deep: true})
 
+watch(() => props.resourceData, () => {
+    if (props.resource) buildResourceData();
+    else buildLocalData();
+}, {deep: true})
+
 </script>
 
 <template>
