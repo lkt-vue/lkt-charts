@@ -1,11 +1,11 @@
-declare function W(t: any, e?: string, r?: string): any;
-declare function P(t: any, e?: {}, r?: {}): _;
-declare function Q(t: any, e?: undefined, r?: undefined): _;
-declare namespace Z {
+declare function ee(t: any, e?: string, s?: string): any;
+declare function Z(t: any, e?: {}, s?: {}): _;
+declare function Y(t: any, e?: undefined, s?: undefined): _;
+declare namespace se {
     function install(t: any, e: any): void;
 }
-declare function Y(t: any): void;
-declare function X(t: any, e?: undefined, r?: undefined): any;
+declare function re(t: any): void;
+declare function te(t: any, e?: undefined, s?: undefined): any;
 declare class _ {
     series: any[];
     setSeries(e: any): this;
@@ -20,4 +20,4 @@ declare class _ {
     setTooltip(e: any): this;
     tooltip: any;
 }
-export { W as addBasicTooltip, P as createBarChart, Q as createSankeyChart, Z as default, Y as setChartEmptySlot, X as setChartTitle };
+export { ee as addBasicTooltip, Z as createBarChart, Y as createSankeyChart, se as default, re as setChartEmptySlot, te as setChartTitle };

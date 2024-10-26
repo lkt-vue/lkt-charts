@@ -3,7 +3,7 @@ export default {name: 'LktChart', inheritAttrs: false};
 </script>
 
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref, useSlots, watch} from "vue";
+import {computed, nextTick, onMounted, onUnmounted, ref, useSlots, watch} from "vue";
 import {AxisX} from "../interfaces/AxisX";
 import {DataSet} from "../interfaces/DataSet";
 import {Chart} from "../instances/Chart";
@@ -11,6 +11,7 @@ import * as echarts from "echarts";
 import {httpCall} from "lkt-http-client";
 import {LktObject} from "lkt-ts-interfaces";
 import {Settings} from "../settings/Settings";
+import {generateRandomString} from "lkt-string-tools";
 
 // Props
 const props = withDefaults(defineProps<{
@@ -34,6 +35,8 @@ const props = withDefaults(defineProps<{
     emptyText: ''
 });
 
+const id = generateRandomString(12);
+
 const slots = useSlots();
 
 const chart = ref(undefined),
@@ -56,7 +59,11 @@ const onResize = () => {
 }
 
 const buildResourceData = async () => {
-    let _chart = echarts.init(container.value);
+    // if (typeof chart.value !== 'undefined') chart.value.dispose();
+    let _chart = chart.value;
+    if (typeof _chart === 'undefined') {
+        _chart = echarts.init(container.value);
+    }
     isLoading.value = true;
     emptyChart.value = false;
 
@@ -83,12 +90,18 @@ const buildResourceData = async () => {
 }
 
 const buildLocalData = () => {
+    if (typeof chart.value !== 'undefined') chart.value.dispose();
+    isLoading.value = true;
     let _chart = echarts.init(container.value);
     let opts = JSON.parse(JSON.stringify(props.options));
     //@ts-ignore
     _chart.setOption(opts);
     //@ts-ignore
     chart.value = _chart;
+
+    nextTick(() => {
+        isLoading.value = false;
+    })
 }
 
 onMounted(() => {
@@ -100,6 +113,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     removeEventListener('resize', onResize);
+    if (typeof chart.value !== 'undefined') chart.value.dispose();
 })
 
 watch(() => props.options, () => {
@@ -136,6 +150,8 @@ const hasEmptySlot = computed(() => {
                 {{emptyText}}
             </template>
         </div>
-        <div v-show="!isLoading && !emptyChart" class="lkt-chart-content" ref="container" v-bind:style="containerStyle"></div>
+        <div v-show="!isLoading && !emptyChart" class="lkt-chart-content" ref="container" v-bind:style="containerStyle">
+            <div :id="id" v-once/>
+        </div>
     </div>
 </template>
