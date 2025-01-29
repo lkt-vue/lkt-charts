@@ -1,7 +1,3 @@
-<script lang="ts">
-export default {name: 'LktChart', inheritAttrs: false};
-</script>
-
 <script setup lang="ts">
 import {computed, nextTick, onMounted, onUnmounted, ref, useSlots, watch} from "vue";
 import {AxisX} from "../interfaces/AxisX";
@@ -12,6 +8,10 @@ import {httpCall} from "lkt-http-client";
 import {LktObject} from "lkt-ts-interfaces";
 import {Settings} from "../settings/Settings";
 import {generateRandomString} from "lkt-string-tools";
+
+const emit = defineEmits([
+    'results'
+]);
 
 // Props
 const props = withDefaults(defineProps<{
@@ -69,6 +69,7 @@ const buildResourceData = async () => {
 
     try {
         const r = await httpCall(props.resource, props.resourceData);
+        emit('results', r);
         let opts = JSON.parse(JSON.stringify(props.options));
         opts = {...opts, ...r.data};
 

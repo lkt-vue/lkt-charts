@@ -1,21 +1,21 @@
-import { defineComponent as D, useSlots as N, ref as d, computed as h, onMounted as w, onUnmounted as z, watch as S, resolveComponent as B, openBlock as c, createElementBlock as v, createBlock as A, createCommentVNode as m, unref as b, renderSlot as L, resolveDynamicComponent as J, Fragment as M, createTextVNode as V, toDisplayString as R, withDirectives as F, createElementVNode as C, normalizeStyle as G, setBlockTracking as T, vShow as I, nextTick as U } from "vue";
-import * as O from "echarts";
-import { httpCall as $ } from "lkt-http-client";
-const k = {
+import { defineComponent as w, useSlots as z, ref as p, computed as m, onMounted as B, onUnmounted as L, watch as A, resolveComponent as J, openBlock as c, createElementBlock as v, createBlock as b, createCommentVNode as k, unref as C, renderSlot as M, resolveDynamicComponent as V, Fragment as R, createTextVNode as F, toDisplayString as G, withDirectives as I, createElementVNode as T, normalizeStyle as U, setBlockTracking as O, vShow as $, nextTick as q } from "vue";
+import * as j from "echarts";
+import { httpCall as H } from "lkt-http-client";
+const g = {
   defaultEmptySlot: void 0
 };
-function q(t = 10) {
+function K(t = 10) {
   let e = "";
-  const s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", o = s.length;
-  for (let i = 0; i < t; i++)
-    e += s.charAt(Math.floor(Math.random() * o));
+  const r = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", s = r.length;
+  for (let d = 0; d < t; d++)
+    e += r.charAt(Math.floor(Math.random() * s));
   return e;
 }
-const H = { class: "lkt-chart" }, K = {
+const P = { class: "lkt-chart" }, Q = {
   key: 1,
   class: "lkt-chart-empty"
-}, P = { name: "LktChart", inheritAttrs: !1 }, Q = /* @__PURE__ */ D({
-  ...P,
+}, W = /* @__PURE__ */ w({
+  __name: "LktChart",
   props: {
     height: { default: 500 },
     resource: { default: "" },
@@ -27,66 +27,70 @@ const H = { class: "lkt-chart" }, K = {
     options: { default: null },
     emptyText: { default: "" }
   },
-  setup(t) {
-    const e = t, s = q(12), o = N(), i = d(void 0), f = d(null), a = d(!1), u = d(!1), j = h(() => {
-      let r = [];
-      return r.push(`height: ${e.height}px`), r.join(";");
-    }), g = () => {
-      i.value && i.value.resize && i.value.resize();
-    }, p = async () => {
-      let r = i.value;
-      typeof r > "u" && (r = O.init(f.value)), a.value = !0, u.value = !1;
+  emits: [
+    "results"
+  ],
+  setup(t, { emit: e }) {
+    const r = e, s = t, d = K(12), E = z(), l = p(void 0), f = p(null), a = p(!1), u = p(!1), _ = m(() => {
+      let o = [];
+      return o.push(`height: ${s.height}px`), o.join(";");
+    }), S = () => {
+      l.value && l.value.resize && l.value.resize();
+    }, y = async () => {
+      let o = l.value;
+      typeof o > "u" && (o = j.init(f.value)), a.value = !0, u.value = !1;
       try {
-        const l = await $(e.resource, e.resourceData);
-        let n = JSON.parse(JSON.stringify(e.options));
-        n = { ...n, ...l.data }, (Array.isArray(n.series) && n.series.length === 0 || !Array.isArray(n.series) && typeof n.series == "object" && (!Array.isArray(n.series.data) || n.series.data.length === 0)) && (u.value = !0), r.setOption(n), i.value = r, a.value = !1;
+        const n = await H(s.resource, s.resourceData);
+        r("results", n);
+        let i = JSON.parse(JSON.stringify(s.options));
+        i = { ...i, ...n.data }, (Array.isArray(i.series) && i.series.length === 0 || !Array.isArray(i.series) && typeof i.series == "object" && (!Array.isArray(i.series.data) || i.series.data.length === 0)) && (u.value = !0), o.setOption(i), l.value = o, a.value = !1;
       } catch {
         a.value = !1;
       }
-    }, y = () => {
-      typeof i.value < "u" && i.value.dispose(), a.value = !0;
-      let r = O.init(f.value), l = JSON.parse(JSON.stringify(e.options));
-      r.setOption(l), i.value = r, U(() => {
+    }, h = () => {
+      typeof l.value < "u" && l.value.dispose(), a.value = !0;
+      let o = j.init(f.value), n = JSON.parse(JSON.stringify(s.options));
+      o.setOption(n), l.value = o, q(() => {
         a.value = !1;
       });
     };
-    w(() => {
-      e.resource ? p() : y(), addEventListener("resize", g);
-    }), z(() => {
-      removeEventListener("resize", g), typeof i.value < "u" && i.value.dispose();
-    }), S(() => e.options, () => {
-      e.resource ? p() : y();
-    }, { deep: !0 }), S(() => e.resourceData, () => {
-      e.resource ? p() : y();
+    B(() => {
+      s.resource ? y() : h(), addEventListener("resize", S);
+    }), L(() => {
+      removeEventListener("resize", S), typeof l.value < "u" && l.value.dispose();
+    }), A(() => s.options, () => {
+      s.resource ? y() : h();
+    }, { deep: !0 }), A(() => s.resourceData, () => {
+      s.resource ? y() : h();
     }, { deep: !0 });
-    const x = h(() => typeof k.defaultEmptySlot < "u"), E = h(() => k.defaultEmptySlot);
-    return (r, l) => {
-      const n = B("lkt-loader");
-      return c(), v("div", H, [
-        a.value ? (c(), A(n, { key: 0 })) : m("", !0),
-        u.value ? (c(), v("div", K, [
-          b(o).empty ? L(r.$slots, "empty", { key: 0 }) : x.value ? (c(), A(J(E.value), {
+    const D = m(() => typeof g.defaultEmptySlot < "u"), N = m(() => g.defaultEmptySlot);
+    return (o, n) => {
+      const i = J("lkt-loader");
+      return c(), v("div", P, [
+        a.value ? (c(), b(i, { key: 0 })) : k("", !0),
+        u.value ? (c(), v("div", Q, [
+          C(E).empty ? M(o.$slots, "empty", { key: 0 }) : D.value ? (c(), b(V(N.value), {
             key: 1,
-            message: r.emptyText
-          }, null, 8, ["message"])) : r.emptyText ? (c(), v(M, { key: 2 }, [
-            V(R(r.emptyText), 1)
-          ], 64)) : m("", !0)
-        ])) : m("", !0),
-        F(C("div", {
+            message: o.emptyText
+          }, null, 8, ["message"])) : o.emptyText ? (c(), v(R, { key: 2 }, [
+            F(G(o.emptyText), 1)
+          ], 64)) : k("", !0)
+        ])) : k("", !0),
+        I(T("div", {
           class: "lkt-chart-content",
           ref_key: "container",
           ref: f,
-          style: G(j.value)
+          style: U(_.value)
         }, [
-          l[0] || (T(-1), (l[0] = C("div", { id: b(s) }, null, 8, ["id"])).cacheIndex = 0, T(1), l[0])
+          n[0] || (O(-1), (n[0] = T("div", { id: C(d) }, null, 8, ["id"])).cacheIndex = 0, O(1), n[0])
         ], 4), [
-          [I, !a.value && !u.value]
+          [$, !a.value && !u.value]
         ])
       ]);
     };
   }
 });
-class _ {
+class x {
   constructor() {
     this.series = [];
   }
@@ -109,24 +113,24 @@ class _ {
     return this.tooltip = e, this;
   }
 }
-const Z = (t, e = {}, s = {}) => {
-  const o = new _();
-  return Array.isArray(t) && t.length > 0 && o.setSeries(t), typeof e == "object" && Object.keys(e).length > 0 && o.setAxisX(e), typeof s == "object" && Object.keys(s).length > 0 && o.setAxisY(s), o;
-}, Y = (t, e = void 0, s = void 0) => {
-  const o = new _();
-  return Array.isArray(t) && t.length > 0 && o.setSeries(t), typeof e == "object" && Object.keys(e).length > 0 && o.setAxisX(e), typeof s == "object" && Object.keys(s).length > 0 && o.setAxisY(s), o;
-}, ee = (t, e = "item", s = "mousemove") => (t.setTooltip({ trigger: e, triggerOn: s }), t), te = (t, e = void 0, s = void 0) => (t.setTitle({ text: e, subtext: s }), t), se = {
+const Y = (t, e = {}, r = {}) => {
+  const s = new x();
+  return Array.isArray(t) && t.length > 0 && s.setSeries(t), typeof e == "object" && Object.keys(e).length > 0 && s.setAxisX(e), typeof r == "object" && Object.keys(r).length > 0 && s.setAxisY(r), s;
+}, ee = (t, e = void 0, r = void 0) => {
+  const s = new x();
+  return Array.isArray(t) && t.length > 0 && s.setSeries(t), typeof e == "object" && Object.keys(e).length > 0 && s.setAxisX(e), typeof r == "object" && Object.keys(r).length > 0 && s.setAxisY(r), s;
+}, te = (t, e = "item", r = "mousemove") => (t.setTooltip({ trigger: e, triggerOn: r }), t), se = (t, e = void 0, r = void 0) => (t.setTitle({ text: e, subtext: r }), t), re = {
   install: (t, e) => {
-    t.component("lkt-chart", Q);
+    t.component("lkt-chart", W);
   }
-}, re = (t) => {
-  k.defaultEmptySlot = t;
+}, oe = (t) => {
+  g.defaultEmptySlot = t;
 };
 export {
-  ee as addBasicTooltip,
-  Z as createBarChart,
-  Y as createSankeyChart,
-  se as default,
-  re as setChartEmptySlot,
-  te as setChartTitle
+  te as addBasicTooltip,
+  Y as createBarChart,
+  ee as createSankeyChart,
+  re as default,
+  oe as setChartEmptySlot,
+  se as setChartTitle
 };
